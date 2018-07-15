@@ -63,3 +63,20 @@ func TestRedirectHandlerNoForwardedProto(t *testing.T) {
 			http.StatusPermanentRedirect, rr.Code)
 	}
 }
+
+func TestHealthCheckHandler(t *testing.T) {
+	req, err := http.NewRequest("GET", "/healthz", nil)
+	if err != nil {
+			t.Fatal(err)
+	}
+
+	rr := httptest.NewRecorder()
+	handler := http.HandlerFunc(HealthCheckHandler)
+
+	handler.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusOK {
+		t.Errorf("Expected status code %v, but got %v",
+			http.StatusOK, rr.Code)
+	}
+}

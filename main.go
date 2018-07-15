@@ -23,11 +23,17 @@ func RedirectHandler(w http.ResponseWriter, req *http.Request) {
 	http.Redirect(w, req, target.String(), http.StatusPermanentRedirect)
 }
 
+func HealthCheckHandler(w http.ResponseWriter, req *http.Request) {
+	w.WriteHeader(http.StatusOK)
+}
+
 func main() {
 	port := flag.Int("port", 8888, "port")
 	flag.Parse()
 
 	http.HandleFunc("/", RedirectHandler)
+	http.HandleFunc("/healthz", HealthCheckHandler)
+
 	lisentAddr := ":" + strconv.Itoa(*port)
 	log.Fatal(http.ListenAndServe(lisentAddr, nil))
 }

@@ -22,3 +22,6 @@ run:
 release:
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(BINARY_LINUX) -v
 	zip $(BINARY_LINUX).zip $(BINARY_LINUX)
+docker: release
+	docker build -t chehai/redirector:latest .
+	docker push chehai/redirector
